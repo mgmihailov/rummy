@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <style>
+        .card {
+            position: absolute;
+            width: 100px;
+            height: 150px;
+            border-radius: 10px;
+            backface-visibility: visible;
+            z-index: 100;
+        }
+
+        .card-back {
+            background-color: brown;
+        }
+
+        .flip-btf {
+            animation-name: flip-card-btf;
+            animation-duration: 0.25s;
+            animation-timing-function: linear;
+        }
+
+        .flip-ftb {
+            animation-name: flip-card-ftb;
+            animation-duration: 0.25s;
+            animation-timing-function: linear;
+        }
+
+        .card-front {
+            background-color: yellow;
+        }
+
+        @keyframes flip-card-btf {
+            from {
+
+            }
+
+            50% {
+                background-color: brown;
+            }
+
+            51% {
+                background-color: yellow;
+            }
+
+            to {
+                background-color: yellow;
+                transform: rotate3d(0, 1, 0, 180deg);
+            }
+        }
+
+        @keyframes flip-card-ftb {
+            from {
+
+            }
+
+            50% {
+                background-color: yellow;
+            }
+
+            51% {
+                background-color: brown;
+            }
+
+            to {
+                background-color: brown;
+                transform: rotate3d(0, 1, 0, -180deg);
+            }
+        }
+    </style>
+</head>
+<body style="background: white;">
+    <!--<div class="card card-back"></div>-->
+</body>
+<script src="game.js"></script>
+<!--<script src="peer_js.js"></script>-->
+<!--<script src="p2p_test.js"></script>-->
+<script>
+    /*var card = document.getElementsByClassName("card")[0];
+    card.onclick = function(e) {
+        console.log("card got a click event at phase " + e.eventPhase);
+
+        if (card.classList.contains("card-front")) {
+            card.classList.add("flip-ftb");
+            setTimeout(function(){
+                card.classList.remove("card-front");
+                card.classList.add("card-back");
+            }, 125);
+            setTimeout(function(){
+                card.classList.remove("flip-ftb");
+            }, 250);
+        } else if (card.classList.contains("card-back")) {
+            card.classList.add("flip-btf");
+            setTimeout(function(){
+                card.classList.remove("card-back");
+                card.classList.add("card-front");
+            }, 125);
+            setTimeout(function(){
+                card.classList.remove("flip-btf");
+            }, 250);
+        }
+        
+    };*/
+</script>
+</html>
