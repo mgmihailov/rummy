@@ -225,11 +225,6 @@ class GUI {
       }
     }
   }
-
-  promptForInput() {
-    // TO BE IMPLEMENTED
-    return "";
-  }
 }
 
 module.exports = {
