@@ -70,9 +70,9 @@ class GUI {
    * - style (a string specifying the element's CSS style)
    * - inputHandlers (a Map<string, Array<Function>> where the key is the
    * event type and the array of functions are handlers to be called for that event)
-   * - inputCategories (a Arra<string> specifying which input categories the
+   * - inputCategories (an Array<string> specifying which input categories the
    * element is part of; can be used to toggle input for specific categories)
-   * @param {Element} parentId The ID of the DOM element to which this newly
+   * @param {string} parentId The ID of the DOM element to which this newly
    * created one should be appended. If omitted or `null`, the newly created DOM
    * element will be attached to the document body.
    * @returns {string} The ID of the renderable DOM element.

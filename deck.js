@@ -62,8 +62,11 @@ const cardSuits = new Map([
 
 /** @class */
 class Card {
+  /** @member {string} */
   #sign;
+  /** @member {string} */
   #suit;
+  /** @member {boolean} */
   #isFaceUp;
 
   /**
@@ -158,16 +161,6 @@ class Deck {
   }
 
   /**
-   * 
-   * @param {Function} callback 
-   */
-  iterate(callback) {
-    for(let i = 0; i < this.#cards.length; ++i) {
-      callback(i, this.#cards[i]);
-    }
-  }
-
-  /**
    * Inserts multiple cards at the top of the deck.
    * @param {Array<Card>} cards An array of @see {@link Card}s to add to the top of the deck.
    */
@@ -182,6 +175,19 @@ class Deck {
    */
   insertMultipleAt(cards, position) {
     this.#cards.splice(position, 0, cards);
+  }
+
+  /**
+   * Go through the cards in the deck and apply a function to each of them.
+   * @param {Function} callback The function to be called for each card. It
+   * takes the following parameters:
+   * - idx (a number representing the position of the card in the deck)
+   * - card (the Card itself)
+   */
+  iterate(callback) {
+    for(let i = 0; i < this.#cards.length; ++i) {
+      callback(i, this.#cards[i]);
+    }
   }
 
   print() {
