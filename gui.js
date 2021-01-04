@@ -149,26 +149,33 @@ class GUI {
     this.#subscribeForInputEvents("global", eventTypes, callbacks);
   }
 
-  updateStyle(id, style) {
-    let elStyle = this.#renderables.get(id).style;
-    let props = style.split(": ").filter((val, idx) => {
-      return idx % 2 === 0;
-    });
-    let propValues
-    newStyle.cssText = style;
-    console.log(elStyle.constructor);
-    console.log(newStyle.constructor);
-    for(let prop in props) {
-      console.log(prop);
-      elStyle[prop] = newStyle[prop];
-    }
+  /**
+   * Sets the inline style of a renderable element with `id` to the specified `style`.
+   * **Note**: This will override the previous style of the renderable element.
+   * @param {string} id The ID of the element you want to set the new style to.
+   * @param {string} style A string in the format:
+   * 
+   * `css-propertyA: css-valueA; css-propertyB: css-valueB; ...`
+   */
+  setStyle(id, style) {
+    this.#renderables.get(id).style = style;
+  }
+
+  /**
+   * Updates the style of a renderable element with `id` with the specified `styleObj`.
+   * **Note**: This doesn't completely override the current style but just properties
+   * that are specified in both the current and in `styleObj`.
+   * @param {string} id The renderable element's ID.
+   * @param {Object} styleObj An object containing the CSS properties of the element's
+   * style that you want to change.
+   */
+  updateStyle(id, styleObj) {
+    this.#updateStyleInternal(this.#renderables.get(id), styleObj);
   }
 
   #onAnimationFinish(animation, element, params, callback) {
     let lastKeyFrame = params.keyframes[params.keyframes.length - 1];
-    for(let prop of Object.getOwnPropertyNames(lastKeyFrame)) {
-      element.style[prop] = lastKeyFrame[prop];
-    }
+    this.#updateStyleInternal(element, lastKeyFrame);
 
     if (callback !== undefined && callback !== null) {
       callback(animation, element, params);
@@ -223,6 +230,17 @@ class GUI {
       } else {
         handlersForEvent.set(type, callbacks);
       }
+    }
+  }
+
+  /**
+   * Adds the values of the properties in `styleObj` to the `element`'s style.
+   * @param {Element} element The renderable element which style you want to update.
+   * @param {Object} styleObj The object containing the properties you want to add / update.
+   */
+  #updateStyleInternal(element, styleObj) {
+    for(let prop of Object.getOwnPropertyNames(styleObj)) {
+      element.style[prop] = styleObj[prop];
     }
   }
 }
