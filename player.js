@@ -47,8 +47,14 @@ class Player {
     this.#name = name;
   }
 
-  getDescription() {
-    return this.#name;
+  /**
+   * The player makes the moves for their turn.
+   * @returns {Array<Move>} The sequence of moves the player made
+   * during their turn.
+   */
+  makeMoves() {
+    moves = [];
+    return moves;
   }
 }
 
