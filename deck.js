@@ -60,14 +60,18 @@ const cardSuits = new Map([
   [SUIT_NEUTRAL, "N"],
 ]);
 
+let cardCounter = 0;
+
 /** @class */
 class Card {
+  /** @member {number} */
+  id;
   /** @member {string} */
-  #sign;
+  sign;
   /** @member {string} */
-  #suit;
+  suit;
   /** @member {boolean} */
-  #isFaceUp;
+  isFaceUp;
 
   /**
    * Constructs a playing card with a specified `sign` and of a specified `suit`.
@@ -79,9 +83,10 @@ class Card {
    */
   constructor(sign, suit, isFaceUp)
   {
-    this.#sign = sign;
-    this.#suit = suit;
-    this.#isFaceUp = isFaceUp || false;
+    this.id = cardCounter++;
+    this.sign = sign;
+    this.suit = suit;
+    this.isFaceUp = isFaceUp || false;
   }
 
   /**
