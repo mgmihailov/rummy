@@ -1,4 +1,10 @@
-const DRAW_CARD = 0;
+const DRAW_CARD_DECK = 0;
+const DRAW_CARD_DISCARD_PILE = 1;
+const DRAW_CARD_UPCARD = 2;
+const MAKE_COMBINATION = 3;
+const SWAP_JOKER = 4;
+const DISCARD_CARD = 5;
+
 
 /**
  * A class representing a move done by a player.
@@ -41,10 +47,64 @@ class Move {
 
 class Player {
   #name;
+  /** @member {Array<Cards>} */
+  #hand;
 
   constructor(name) {
     debugLog("Instantiated a Player.");
     this.#name = name;
+    this.#hand = [];
+  }
+
+  /**
+   * Adds multiple cards to the player's hand.
+   * @param {Array<Cards>} cards The cards to be added to the
+   * player's hand.
+   */
+  addCardsToHand(cards) {
+    this.#hand.push.apply(this.#hand, cards);
+  }
+
+  /**
+   * Add a card to the player's hand.
+   * @param {Card} card The card to be added to the player's hand.
+   */
+  addCardToHand(card) {
+    this.#hand.push(card);
+  }
+
+  /**
+   * Discards a card with ID `cardId` from the player's hand.
+   * @param {number} cardId The ID of the card to discard from
+   * the player's hand.
+   * @returns {(Card|undefined)} The card that is discarded from
+   * the player's hand or `undefined` if there's no card with
+   * ID `cardId` in the player's hand.
+   */
+  discardCardFromHand(cardId) {
+    return this.#hand.find(card => {
+      return card.id == cardId;
+    });
+  }
+
+  /**
+   * Discards the cards which have their IDs present in `cardIds`
+   * from the player's hand.
+   * @param {Array<number>} cardIds An array containing the IDs of
+   * the cards to be discarded from the player's hand.
+   * @returns {Array<Card>} An array containing the discarded `Card`s.
+   * The array will be empty if none of the `cardIds` matches with
+   * a card ID from the player's hand. 
+   */
+  discardCardsFromHand(cardIds) {
+    let discarded = [];
+    cardIds.forEach(id => {
+      let card = this.#hand.find(id);
+      if (card) {
+        discarded.push(card);
+      }
+    });
+    return discarded;
   }
 
   /**
