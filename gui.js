@@ -91,6 +91,8 @@ class GUI {
       el.addEventListener(eventType, this.#queueInputEvent.bind(this), false);
       this.#subscribeForInputEvents(el.id, [ eventType ],options.inputHandlers.get(eventType));
     }
+    // TO DO: Use data attribute for input categories. Classes
+    // should be used for styling only.
     for(let category of options.inputCategories) {
       el.classList.add(category);
     }
@@ -129,6 +131,7 @@ class GUI {
       let handlersForEvent = this.#subscribers.get(evt.target.id);
       let handlers = handlersForEvent.get(evt.type);
       handlers.forEach(handler => {
+        // TO DO: Pass the input categories as well
         handler(evt);
       });
     });
@@ -199,6 +202,9 @@ class GUI {
    * @param {Event} e The event to be processed.
    */
   #queueInputEvent(e) {
+    // TO DO: Use data attribute instead of class list for
+    // input categories. Classes should only be used for
+    // styles.
     for(let clss of e.target.classList) {
       if (this.#disabledInputCategories.includes(clss)) {
         return;

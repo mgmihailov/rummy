@@ -4,7 +4,72 @@ const crypto = require("crypto");
 const { Player, PlayerProxy } = require("./player");
 const { State } = require("./state");
 const { GUI } = require("./gui");
-const { Deck } = require("./deck");
+const { Deck, Card, Constants } = require("./deck");
+
+// TODO: Remove, this is only for debug purposes
+let debugHand = [
+  new Card(
+    Constants.Signs.get(Constants.SIGN_SEVEN),
+    Constants.Suits.get(Constants.SUIT_CLUBS),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_THREE),
+    Constants.Suits.get(Constants.SUIT_SPADES),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_FOUR),
+    Constants.Suits.get(Constants.SUIT_SPADES),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_FIVE),
+    Constants.Suits.get(Constants.SUIT_SPADES),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_SIX),
+    Constants.Suits.get(Constants.SUIT_SPADES),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_SEVEN),
+    Constants.Suits.get(Constants.SUIT_SPADES),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_SEVEN),
+    Constants.Suits.get(Constants.SUIT_HEARTS),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_SEVEN),
+    Constants.Suits.get(Constants.SUIT_DIAMONDS),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_EIGHT),
+    Constants.Suits.get(Constants.SUIT_DIAMONDS),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_NINE),
+    Constants.Suits.get(Constants.SUIT_DIAMONDS),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_TEN),
+    Constants.Suits.get(Constants.SUIT_DIAMONDS),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_ACE),
+    Constants.Suits.get(Constants.SUIT_CLUBS),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_TWO),
+    Constants.Suits.get(Constants.SUIT_CLUBS),
+  ),
+  new Card(
+    Constants.Signs.get(Constants.SIGN_THREE),
+    Constants.Suits.get(Constants.SUIT_CLUBS),
+  ),
+];
+
+let debugTopCard = new Card(
+  Constants.Signs.get(Constants.SIGN_KING),
+  Constants.Suits.get(Constants.SUIT_HEARTS),
+);
 
 // TO DO: Make this smarter and prettier
 function getCardStyle(topOffset, leftOffset, rotation, zIndex, transformOrigin) {
@@ -97,6 +162,7 @@ class Game {
     this.#inputEvents = [];
     this.#gui = new GUI();
     this.#deck = new Deck(2);
+    this.#deck.shuffle();
   }
 
   #encrypt(text)  {
@@ -159,7 +225,7 @@ class Game {
       this.#gui.createRenderable(options);
     }*/
 
-    let rootId = "global";
+    /*let rootId = "global";
     this.#deck.iterate((idx, card) => {
       let style = getCardStyle(40 - idx * 0.01, 80 - idx * 0.01, 0, idx, "top left");
       let handlers = new Map();
@@ -190,7 +256,48 @@ class Game {
         }};
       let anim = this.#gui.createAnimation(id, animationOptions);
       setTimeout(() => { anim.play(); }, 1000);
+    });*/
+
+    let playerCards = [];
+    for (let i = 0; i < 14; ++i) {
+    //for (let i = 0; i < 2; ++i) {
+      let cards = this.#deck.drawMultiple(i === 0 ? 3 : 2);
+      if ((i % 2) === 0) {
+        //playerCards.push.apply(playerCards, cards);
+        //this.#players[i % 2].addCardsToHand(cards);
+      }
+    }
+
+    playerCards = debugHand;
+    this.#players[0].addCardsToHand(playerCards);
+
+    playerCards.sort((a, b) => {
+      if (a.suit < b.suit) {
+        return -1;
+      } else if (a.suit > b.suit) {
+        return 1;
+      }
+
+      return a.sign <= b.sign ? -1 : 1;
     });
+    console.log("Player got cards:");
+    let cardsStr = ""
+    for(let card in playerCards) {
+      if (card >= 1 && playerCards[card - 1].suit !== playerCards[card].suit) {
+        cardsStr += "\n";
+      }
+      cardsStr += " | " + playerCards[card].toString();
+    }
+
+    console.log(cardsStr);
+
+    //let topCard = this.#deck.draw();
+    let topCard = debugTopCard;
+    console.log("Top card is " + topCard.sign + " of " + topCard.suit);
+    console.log(topCard.id);
+    this.#players[0].canMakeComboWithCard(topCard);
+    this.#players[0].addCardToHand(topCard);
+    this.#players[0].updatePossibleCombos();
 
     if (mode === Game.MIRRORED_MULTIPLAYER) {
 
@@ -219,7 +326,7 @@ class Game {
       setTimeout(() => {
         this.#gui.enableInput("game");
 
-        this.#gui.updateStyle(CardID, "left: 3vw")
+        //this.#gui.updateStyle(CardID, "left: 3vw")
       }, 5000);
     } else if(mode === Game.NORMAL_MULTIPLAYER) {
       //TO BE IMPLEMENTED

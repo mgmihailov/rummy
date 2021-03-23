@@ -1,0 +1,20 @@
+(Hopefully) Faster algorithm:
+
+- Utilizes the fact that the cards are already sorted in the hand
+  (starting from lowest to highest rank, spades to clubs)
+- The functions either:
+  - Tries to build a sequence from the current card
+  OR
+  - Tries to build n-of-a-kind with the current card
+- Each time the function is called, it should do a second,
+  recursive call to itself to try test the n-of-a-kind route.
+  The current call of the function continues exploring the
+  sequence route.
+- Each time the function completes a combo it should do a
+  recursive call to start a new combo. The current call of
+  the function should continue exploring the longest possible
+  combo.
+- Also possibly keep an array of cards with same sign to check
+  for n-of-a-kind combos. To exhaust all possible variants, use
+  wrapping method when iterating (if you have an array of 4 cards
+  , try 0 1 2, 1 2 3, 2 3 0, 3 0 1).
